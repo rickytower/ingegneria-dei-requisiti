@@ -29,7 +29,7 @@
 	\end{itemize}
 	\begin{figure}[th]
 		\centering
-		\includegraphics[width=\linewidth]{img/word-machine-sets}
+		\includegraphics[width=0.7\linewidth]{img/word-machine-sets}
 		\caption{modellazione dei problemi che sono contenuti nel mondo reale e delle soluzioni che sono contenute nella macchina.}
 		\label{fig:word-machine-sets}
 	\end{figure}
@@ -50,7 +50,7 @@
 	\end{enumerate}
 	\begin{figure}[th]
 		\centering
-		\includegraphics[width=\linewidth]{img/system-as-is-system-to-be}
+		\includegraphics[width=0.7\linewidth]{img/system-as-is-system-to-be}
 		\caption{system-as-is e system-to-be.}
 		\label{fig:system-as-is-system-to-be}
 	\end{figure}
@@ -58,7 +58,7 @@
 	I \textbf{requisiti di sistema} fanno parte del system-to-be. I \textbf{requisiti del software} fanno parte del software-to-be e sono le funzionalità che deve fornire per rispondere ai requisiti richiesti dall'utente.
 	\begin{figure}[th]
 		\centering
-		\includegraphics[width=\linewidth]{img/www-dimensions}
+		\includegraphics[width=0.7\linewidth]{img/www-dimensions}
 		\caption{il chi, che cosa e perché dell'ingegneria dei requisiti.}
 		\label{fig:www-dimensions}
 	\end{figure}
@@ -80,4 +80,50 @@
 			\textit{Le porte dovrebbero sempre rimanere chiuse quando il treno è in movimento}
 		\end{quotation}
 	\end{itemize}
+	\paragraph{\textbf{Nota bene!}}I vincoli prescrittivi possono essere negoziati tra gli ingegneri dei requisiti e i vari stakeholders, possono essere indeboliti o rimpiazzati con alternative, mentre i vincoli descrittivi no.
+
+	I requisiti possono riferirsi a fenomeni dell'\textbf{ambiente} (ad esempio, se il treno si sta muovendo, le porte devono essere chiuse) oppure possono essere condivisi tra il software-to-be e l'ambiente (una componente software potrebbe monitorare un fenomeno ambientale e avvisare un'altra componente software del cambiamento avvenuto. Ad esempio, se la velocità monitorata è pari a zero, allora lo stato delle porte deve essere chiuso).
+
+	Un \textbf{requisito di sistema} ha delle frasi tipicamente \textbf{prescrittive} che si riferiscono ai fenomeni ambientali e che devono essere formulate con vocabolario che deve essere comprensibile a tutti gli stakeholders. Ad esempio:
+	\begin{quotation}
+		\textit{Se il sistema è in movimento, allora le porte devono essere chiuse}
+	\end{quotation}
+	ovvero: $\text{TrainMoving} \implies \text{DoorsClosed}$.
+	Un \textbf{requisito del software} contiene tipicamente delle frasi \textbf{prescrittive} che si riferiscono a fenomeni condivisi e che devono essere supportate dal software-to-be. Vengono formulate con un vocabolario comprensibile agli sviluppatori software. Un esempio è il seguente.
+	\begin{quotation}
+		\textit{"Se la velocità misurata è diversa da zero, allora le porte devono essere nello stato chiuso"}
+	\end{quotation}
+	ossia: $\text{measuredSpeed}\ne 0 \implies doorsState = \text{`closed'}$
+	Tipi di frasi che possiamo formulare nei nostri domini possono essere:
+	\begin{itemize}
+		\item \textbf{Proprietà di dominio:} è una frase descrittiva riguardo un fenomeno del mondo reale che avviene indipendentemente dall'esistenza di un sistema software.
+		Ad esempio: $\text{trainAcceleration} > 0 \implies \text{trainSpeed} \ne 0$
+		\item \textbf{Assunzioni:} sono delle frasi che devono essere soddisfatte dall'ambiente quando deve essere considerato il software-to-be e formulate in riferimento a fenomeni ambientali. Generalmente sono prescrittive. Ad esempio
+		$\text{measuredSpeed} \ne 0 \iff \text{trainSpeed} \ne 0$.
+		\item \textbf{Definizioni:} sono frasi che forniscono un significato preciso al sistema. Non hanno un valore di verità. Ad esempio, una definizione potrebbe essere:
+		\begin{quotation}
+			\textit{measuredSpeed (velocità misurata) è la velocità stimata dal tachimetro del treno}.
+		\end{quotation}
+	\end{itemize}
+	\begin{figure}[th]
+		\centering
+		\includegraphics[width=0.7\linewidth]{img/modello-4-variabili.drawio}
+		\caption{modello 4-variable.}
+		\label{fig:modello-4-variabili}
+	\end{figure}
+	Il modello in figura \ref{fig:modello-4-variabili} è composto da:
+	\begin{itemize}
+		\item \textbf{dispositivi di input} quali ad esempio sensori;
+		\item \textbf{softwareToBe} ovvero il software da sviluppare;
+		\item \textbf{ambiente} nel quale il sistema opera;
+		\item \textbf{dispositivi di output} ad esempio attuatori.
+	\end{itemize}
+	Il sistema misura la velocità attraverso i sensori. Il software in esecuzione nel sistema, legge i dati di input, prende delle decisioni, calcola dei risultati che successivamente invia agli attuatori. Gli attuatori rilevano i risultati e attuano delle azioni sul mondo esterno. In questa fase possono modificare delle variabili di controllo del mondo esterno (come quelle delle porte). Il mondo contiene sia le variabili controllate dagli attuatori, sia quelle monitorate dai dispositivi di input. Ad esempio la variabile che contiene l'informazione relativa alla velocità del treno, viene monitorata da uno o più sensori. Quindi la variabile monitorata è la velocità del treno, mentre la variabile controllata è le porte chiuse.
+	\begin{itemize}
+		\item 	$SysReq \subseteq M \times C$: i requisiti di sistema sono una relazione tra variabili monitorate e le variabili controllate. Le variabili controllate cambiano a seconda delle variabili monitorate;
+		\item $SofReq \subseteq I \times O$: i requisiti software sono la relazione tra dati di input ed output;
+		\item $SofReq = Map(SysReq, Dom, Asm)$: i requisiti software sono una mappa tra i requisiti di sistema ($SysReq$), le assunzioni ($Asm$) e le proprietà di dominio ($Dom$).
+	\end{itemize}
+
+
 \end{document}
