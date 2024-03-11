@@ -4,6 +4,9 @@
 \usepackage{mathtools}
 \usepackage{amssymb}
 \usepackage{amsthm}
+\usepackage{arydshln}
+\usepackage{listings}
+\usepackage{mathtools}
 \usepackage{xcolor}
 \usepackage{nameref}
 \usepackage{babel}
@@ -124,6 +127,25 @@
 		\item $SofReq \subseteq I \times O$: i requisiti software sono la relazione tra dati di input ed output;
 		\item $SofReq = Map(SysReq, Dom, Asm)$: i requisiti software sono una mappa tra i requisiti di sistema ($SysReq$), le assunzioni ($Asm$) e le proprietà di dominio ($Dom$).
 	\end{itemize}
-
+	La mappa $SysReq$ è riportata nella figura \ref{fig:mappa-sysreq} e si può riassumere con la seguente relazione \ref{eqn:mapping-system-req-to-sw-req}:
+	\begin{equation}
+		\text{SOFREQ, ASM, DOM |= SysReq}
+		\label{eqn:mapping-system-req-to-sw-req}
+	\end{equation}
+	\begin{figure}[ht]
+		\centering
+		\begin{eqnarray*}
+			\begin{array}{cc}
+				SoftReq \colon & measuredSpeed \ne 0 \to doorsState = \text{`closed'}\\
+				ASM \colon &  measuredSpeed \ne 0 \iff trainSpeed \ne 0 \\
+				&doorsState = \text{`closed'} \iff DoorsClosed\\
+				Dom\colon &  TrainMoving \iff trainSpeed \ne 0\\
+				\hdashline
+				SysReq\colon&  TrainMoving \implies DoorsClosed
+			\end{array}
+		\end{eqnarray*}
+		\caption{I requisiti del software sono una mappa (relazione).}
+		\label{fig:mappa-sysreq}
+	\end{figure}
 
 \end{document}
