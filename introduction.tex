@@ -4,11 +4,11 @@
 \usepackage{mathtools}
 \usepackage{amssymb}
 \usepackage{amsthm}
-\usepackage{arydshln}
 \usepackage{listings}
 \usepackage{mathtools}
 \usepackage{xcolor}
-\usepackage{nameref}
+\usepackage{tabularray}
+\usepackage{tabularx}
 \usepackage{babel}
 \usepackage[hidelinks]{hyperref}
 \graphicspath{img/}
@@ -132,20 +132,114 @@
 		\text{SOFREQ, ASM, DOM |= SysReq}
 		\label{eqn:mapping-system-req-to-sw-req}
 	\end{equation}
+	e il cui significato è che i requisiti di sistema vengono soddisfatti se sono sono soddisfatti contemporaneamente i requisiti del software, le assunzioni e le proprietà di dominio.
 	\begin{figure}[ht]
 		\centering
 		\begin{eqnarray*}
-			\begin{array}{cc}
-				SoftReq \colon & measuredSpeed \ne 0 \to doorsState = \text{`closed'}\\
+			\begin{tblr}{cc}
+				SoftReq \colon & measuredSpeed \ne 0 \implies doorsState = \text{`closed'}\\
 				ASM \colon &  measuredSpeed \ne 0 \iff trainSpeed \ne 0 \\
 				&doorsState = \text{`closed'} \iff DoorsClosed\\
 				Dom\colon &  TrainMoving \iff trainSpeed \ne 0\\
-				\hdashline
+				\hline[dashed]
 				SysReq\colon&  TrainMoving \implies DoorsClosed
-			\end{array}
+			\end{tblr}
 		\end{eqnarray*}
 		\caption{I requisiti del software sono una mappa (relazione).}
 		\label{fig:mappa-sysreq}
 	\end{figure}
+	\paragraph{Terminologia: requisiti funzionali e non funzionali.}
+	I \textbf{requisiti funzionali} specificano quali sono i servizi e le funzionalità che il software deve fornire. Ad esempio:
+	\begin{quotation}
+		\textit{"Il software deve controllare l'accelerazione dei treni."}
+	\end{quotation}
+	è una funzionalità che il software deve provvedere.
+	I \textbf{requisiti non funzionali} evidenziano le qualità che le funzionalità devono avere. Esempi tipici sono la sicurezza, l'affidabilità del sistema, le performance in termini di tempo/spazio, l'usabilità, la reattività agli eventi, etc\dots Rappresentano dei vincoli. Un esempio di requisito funzionale è il seguente.
+	\begin{quotation}
+		\textit{"I comandi di accelerazione devono essere impartiti ogni 3 secondi a ciascun treno."}
+	\end{quotation}
 
+	\paragraph{Tassonomia dei requisiti non funzionali.} Viene usata per guidare gli stakeholders nella descrizione dei requisiti non funzionali (che altrimenti, potrebbero non emergere durante l'intervista). In alcuni casi i requisiti non funzionali diventano funzionali (ad esempio, i requisiti di sicurezza usati per specificare le funzionalità di un firewall sono dei requisiti funzionali).
+
+	\subsection{Come evolvono i requisiti}
+		I requisiti si \textbf{evolvono nel tempo}.
+		\begin{figure}[th]
+			\centering
+			\includegraphics[width=0.7\linewidth]{img/cycle-requirements}
+			\caption{l'ingegneria dei requisiti è un processo iterativo.}
+			\label{fig:cycle-requirements}
+		\end{figure}
+
+		 Fare riferimento alla figura \ref{fig:cycle-requirements}. Durante la prima fase, si studia il \textbf{dominio}:
+		 \begin{itemize}
+		 	\item il system-as-is (il mondo prima che il software venga implementato).
+		 	\begin{itemize}
+		 		\item organizzazione aziendale: come è strutturata, le dipendenze, gli obbiettivi strategici, le politiche e i flussi di lavoro, le procedure;
+		 		\item il dominio di applicazione: concetti, obbiettivi, compiti, vincoli, regolamentazioni all'interno dell'organizzazione;
+		 		\item punti di forza e di debolezza;
+		 	\end{itemize}
+		 	\item gli stakeholders del sistema:
+		 	\begin{itemize}
+		 		\item gruppi di individui o singole persone coinvolte dal system-to-be, che potrebbero influenzare lo sviluppo e l'accettazione del sistema;
+		 		\item decision makers, manager, esperti di dominio, utenti, clienti, subappaltatori, analisti, sviluppatori.
+		 	\end{itemize}
+		 \end{itemize}
+		 Questo processo produce una forma iniziale di glossario della terminologia da utilizzare.
+
+		 Successivamente inizia la parte di \textbf{elicitazione dei requisiti} (secondo quadrante della figura \ref{fig:cycle-requirements}) nella quale si esplora il problema da risolvere con il software, analizzando il system-as-is, le specificità, le opportunità tecnologiche a disposizione.
+
+		 I requisiti sono accordati con gli stakeholders dopo una fase di negoziazione e durante la quale si identificano i punti di disaccordo, i rischi, le opzioni alternative. Poi si prioritarizzano i requisiti.
+
+		 Segue la fase in cui i requisiti vengono documentati (terzo quadrante nella figura \ref{fig:cycle-requirements})con il \textbf{documento dei requisiti}(RD). La documentazione ha l'obbiettivo di fissare gli scopi del sistema software, le proprietà rilevanti di dominio, le specifiche software e di sistema, le assunzioni e le responsabilità. Il documento deve essere \textbf{strutturato} e \textbf{comprensibile} da tutti gli stakeholders.
+
+		 Nella fase successiva, il documento deve essere convalidato per verificare la presenza di inconsistenze, omissioni, o errori in generale.
+
+		 Il documento rappresenta un contratto. Fornisce una stima dei costi, funziona da preventivo.
+
+		 L'approccio appena descritto nella figura \ref{fig:cycle-requirements} è \textbf{iterativo}.
+		Gli obbiettivi del processo di ingegneria dei requisiti sono:
+		\begin{itemize}
+
+			\item completezza;
+			\item consistenza;
+			\item adeguatezza;
+			\item univocità;
+			\item misurabilità;
+			\item pertinenza;
+			\item fattibilità;
+			\item comprensibilità;
+			\item buona struttura;
+			\item modificabilità;
+			\item tracciabilità;
+		\end{itemize}
+		degli elementi del documento dei requisiti.
+
+		Gli errori nel documento dei requisiti possono essere (gli errori critici sono in rosso):
+		\begin{itemize}
+			{\color{red}\item omissione;
+			\item contraddizione;
+			\item inadeguatezza;
+			\item ambiguità;}
+			\item inmisurabilità;
+			\item rumore;
+			\item irrealizzabilità;
+			\item strutturazione povera, riferimenti immaturi
+		\end{itemize}
+		Esempi applicati degli errori in rosso.
+		\begin{table}[th]
+			\centering
+			\begin{tabular}{|m{0.3\linewidth}|m{0.7\linewidth}|}
+				\hline
+				\textbf{Errore} & \textbf{Esempio}\\
+				\hline
+				\textbf{Omissione} & Un problema del mondo reale non viene riportato in nessun elemento del documento dei requisiti:
+				\begin{itemize}
+					\item nessun requisito riguardo lo stato delle porte del treno in caso di una fermata di emergenza.
+				\end{itemize}\\
+				\hline
+				\textbf{Contraddizione} & Gli elementi del documento dei requisiti \\
+
+				\hline
+			\end{tabular}
+		\end{table}
 \end{document}
