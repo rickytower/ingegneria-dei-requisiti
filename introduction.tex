@@ -9,10 +9,17 @@
 \usepackage{xcolor}
 \usepackage{tabularray}
 \usepackage{tabularx}
+\usepackage{cancel}
+\usepackage{lipsum}
+\usepackage{longtable}
+\usepackage{microtype}
 \usepackage{babel}
 \usepackage[hidelinks]{hyperref}
 \graphicspath{img/}
+\DeclareMathSymbol{\mlq}{\mathord}{operators}{``}
+\DeclareMathSymbol{\mrq}{\mathord}{operators}{`'}
 \title{Ingegneria dei requisiti}
+{\renewcommand{\arraystretch}{2}%
 \author{Riccardo Torre}
 \begin{document}
 	\maketitle
@@ -133,13 +140,13 @@
 		\label{eqn:mapping-system-req-to-sw-req}
 	\end{equation}
 	e il cui significato è che i requisiti di sistema vengono soddisfatti se sono sono soddisfatti contemporaneamente i requisiti del software, le assunzioni e le proprietà di dominio.
-	\begin{figure}[ht]
+	\begin{figure}[th]
 		\centering
 		\begin{eqnarray*}
 			\begin{tblr}{cc}
-				SoftReq \colon & measuredSpeed \ne 0 \implies doorsState = \text{`closed'}\\
+				SoftReq \colon & measuredSpeed \ne 0 \implies doorsState = \mlq closed\mrq\\
 				ASM \colon &  measuredSpeed \ne 0 \iff trainSpeed \ne 0 \\
-				&doorsState = \text{`closed'} \iff DoorsClosed\\
+				&doorsState = \mlq closed \mrq \iff DoorsClosed\\
 				Dom\colon &  TrainMoving \iff trainSpeed \ne 0\\
 				\hline[dashed]
 				SysReq\colon&  TrainMoving \implies DoorsClosed
@@ -225,21 +232,132 @@
 			\item irrealizzabilità;
 			\item strutturazione povera, riferimenti immaturi
 		\end{itemize}
+			\subsection{Errori}
 		Esempi applicati degli errori in rosso.
-		\begin{table}[th]
+		\begin{longtable}{|m{0.27\linewidth}|m{0.63\linewidth}|}
+			\hline
+			\textbf{Errore} & \textbf{Descrizione}\\
+			\hline
+			\textbf{Omissione} & Un problema del mondo reale non viene riportato in nessun elemento del documento dei requisiti:
+			\begin{verse}
+				 nessun requisito riguardo lo stato delle porte del treno in caso di una fermata di emergenza.
+			\end{verse}\\
+			\hline
+			\textbf{Contraddizione} & Il documento dei requisiti potrebbe contenere frasi che sono in opposizione, cioè si contraddicono:  \begin{verse}
+				\textit{"Le porte devono restare chiuse tra due piattaforme."}
+			\end{verse}
+			\begin{verse}
+				\textcolor{red}{ e }
+			\end{verse}
+			\begin{verse}
+				\textit{"Le porte devono rimanere aperte in caso di una fermata di emergenza."}
+			\end{verse}
+			sono in contraddizione.\\
+			\hline
+			\textbf{Inadeguatezza} & Il requisito non è formulato opportunamente per descrivere una caratteristica del mondo reale. Ad esempio, l'affermazione:
+			\begin{verse}
+				\textit{"I pannelli informativi all'interno del treno dovrebbero mostrare tutti i voli in partenza presso il terminal al quale il treno sta arrivando."}
+			\end{verse}
+			è inadeguato perché non specifica quali aerei (tutti gli aerei in partenza, gli aerei della prossima ora, quelli in ritardo, solo quelli in orario? Devo mostrare il gate? La porta d'imbarco?). Sono gli stakeholders a dover decidere cosa deve essere mostrato e non è compito degli sviluppatori decidere cosa mostrare.\\
+			\hline
+			\textbf{Ambiguità} & Gli elementi del RD non dovrebbero lasciare un'interpretazione libera dei requisiti al lettore.
+			\begin{verse}
+				\textit{"Le porte dovrebbero rimanere aperte non appena il treno si ferma alla piattaforma."}
+			\end{verse}\\
+			\hline
+			\textbf{Inmisurabilità} & È complicato enunciare una caratteristica del mondo reale in modo tale da precludere il confronto tra le opzioni o la sperimentazione di soluzioni. Ad esempio
+			\begin{verse}
+				\textit{"I pannelli all'interno del treno dovrebbero essere user-friendly."}
+			\end{verse}
+			non è una caratteristica misurabile.
+			\\
+			\hline
+		\end{longtable}
+		\subsection{Vizi}
+		I \textbf{vizi} sono generalmente meno gravi rispetto agli errori.
+		\begin{longtable}{|m{0.27\linewidth}|m{0.63\linewidth}|}
+			\hline
+			\textbf{Vizio} & \textbf{Descrizione}\\
+			\hline
+			\textbf{Noise} (rumore) & Elementi del RD che non danno alcuna informazione rispetto alle funzionalità del mondo reale. Ad esempio:
+			\begin{verse}
+				\textit{"I segnali di divieto di fumare devono essere posti sulle finestre del treno.}
+			\end{verse}
+			Il rumore è un'informazione irrilevante.
+			\\
+			\hline
+			\textbf{Overspecification} & È una frase del RD che si riferisce al software anziché alla risoluzione di una caratteristica del mondo reale. Ad esempio:
+			\begin{verse}
+				\textit{"Il metodo setAlarm dovrebbe essere invocato o recepito come un messaggio di allarme."}
+			\end{verse}
+			\\
+			\hline
+			\textbf{Unfeasibility} & Gli elementi del RD non sono realizzabili. Ad esempio:
+			\begin{verse}
+				\textit{"I pannelli all'interno del treno dovrebbero mostrare tutti i voli in ritardo alla prossima fermata."}
+			\end{verse}
+			\\
+			\hline
+			\textbf{Untelligibility}& Gli elementi del RD sono incomprensibili a coloro che ne necessitano. Ad esempio:
+			\begin{verse}
+				\textit{"Una dichiarazione dei requisiti contiene 5 acronimi"}
+			\end{verse}\\
+			\hline
+			\textbf{Poor strutturing } & Gli elementi del RD non sono organizzati in accordo con qualsiasi regola di strutturazione sensata e visibile. Ad esempio:
+			\begin{quotation}
+				\textit{"Presenza di un intreccio tra il controllo dell'accelerazione e il tracciamento dei treni."}
+			\end{quotation}
+			\\
+			\hline
+			\textbf{Forward reference} & Il RD contiene riferimenti a caratteristiche del mondo reale non ancora definite. Ad esempio:
+			\begin{verse}
+				\textit{"L'uso multiplo del concetto di distanza di arresto nel caso peggiore, prima che la definizione appaia diverse pagine dopo nel RD."}
+			\end{verse}\\
+			\hline
+			\textbf{Remorse} & Il RD contiene forward reference (l'ingegnere dei requisiti usa termini non ancora definiti). L'ingegnere dei requisiti prova rimorso perché sa che sta facendo un lavoro in modo sbagliato e inizia a scrivere le definizioni tra parentesi.\\
+			\hline
+			\textbf{Poor modifiability} & Il RD contiene degli elementi che non si propagano automaticamente. Ad esempio:
+			\begin{verse}
+				\textit{"Utilizzo di valori numerici costanti per quantità soggette a cambiamento."}
+			\end{verse}
+			\\
+			\hline
+		\end{longtable}
+		Il processo di raccolta dei requisiti cambia in base al tipo di processo software adottato. Ci sono varie tipologie di software:
+		\begin{itemize}
+			\item \textbf{green-field} vs \textbf{brown-field}: green-field è un termine che si riferisce ad un progetto software che viene scritto da zero, e quindi lascia la massima libertà a chi lo progetta; brown-field è usato per identificare i sistemi legacy e di conseguenza vincola il progettista al contesto esistente.
+			\item \textbf{customer-driven} vs \textbf{market-driven}: il primo si riferisce ad un progetto che è guidato dalle scelte del cliente, mentre il secondo dipende dalle scelte del mercato;
+			\item \textbf{in-house} vs \textbf{outsourced}: sviluppo di un software all'interno di un'organizzazione aziendale; sviluppo di un prodotto software a partire dalla raccolta dei requisiti e concluso solitamente con la stipulazione di un contratto.
+			\item \textbf{single-product} vs \textbf{product-line}: il primo identifica lo sviluppo di una singola linea di prodotti (es. lo sviluppo di un treno); il secondo una linea di prodotti con differenti modelli (es. smartphone).
+		\end{itemize}
+		\begin{figure}[th]
 			\centering
-			\begin{tabular}{|m{0.3\linewidth}|m{0.7\linewidth}|}
-				\hline
-				\textbf{Errore} & \textbf{Esempio}\\
-				\hline
-				\textbf{Omissione} & Un problema del mondo reale non viene riportato in nessun elemento del documento dei requisiti:
-				\begin{itemize}
-					\item nessun requisito riguardo lo stato delle porte del treno in caso di una fermata di emergenza.
-				\end{itemize}\\
-				\hline
-				\textbf{Contraddizione} & Gli elementi del documento dei requisiti \\
-
-				\hline
-			\end{tabular}
-		\end{table}
+			\includegraphics[width=0.7\linewidth]{img/grafico-torta-problema-requisiti-1955}
+			\caption{Standish report del 1955: 8000 progetti di 350 aziende americane.}
+			\label{fig:grafico-torta-problema-requisiti-1955}
+		\end{figure}
+		Il problema di gestire i requisiti è notevole se si guarda il grafico che riporta i risultati di un report storico condotto nel 1955 e che ha coinvolto 8000 progetti provenienti da 350 aziende diverse (figura \ref{fig:grafico-torta-problema-requisiti-1955}).
+		 I principali motivi di fallimento dei progetti software dello Standish report del 1955 sono riportati nel grafico in figura \ref{fig:grafico-torta-motivi-fallimento}.
+		 \begin{figure}[bh]
+		 	\centering
+		 	\includegraphics[width=0.7\linewidth]{img/grafico-torta-motivi-fallimento}
+		 	\caption{motivi di fallimento dei progetti nello Standish report del 1955.}
+		 	\label{fig:grafico-torta-motivi-fallimento}.
+		 \end{figure}
+		 I problemi legati ai requisiti rimangono costanti. Gli errori legati ai requisiti sono tra quelli più numerosi, più costanti e più costosi. Un esempio di errore di una proprietà di dominio definita inadeguatamente è quello del sistema di frenaggio dell'A320 riportato nella figura \ref{fig:a320-braking-logic}.
+		 \begin{figure}[th]
+		 	\centering
+		 	\begin{eqnarray*}
+		 			\begin{tblr}{m{0.2\linewidth}m{0.645\linewidth}}
+		 			SofReq\colon & reverse=\mlq on \mrq \iff WheelPulses=\mlq on\mrq\\
+		 			\color{red}ASM \colon & \color{red} reverse= \mlq on\mrq  \iff ReverseThrustEnabled \\ &
+		 			\color{red} WheelPulses= \mlq on \mrq \iff WheelsTurning\\
+		 			Dom \colon & MovingOnRunway \iff WheelsTurning\\
+		 			\hline[dashed]
+		 			SysReq\colon & ReverseThrustEnabled \iff MovingOnRunway
+		 		\end{tblr}
+		 	\end{eqnarray*}
+		 	\caption{}
+		 \label{fig:a320-braking-logic}
+		 \end{figure}
 \end{document}
