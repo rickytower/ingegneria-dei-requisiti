@@ -9,12 +9,13 @@
 \usepackage{xcolor}
 \usepackage{tabularray}
 \usepackage{tabularx}
-\usepackage{cancel}
 \usepackage{lipsum}
 \usepackage{longtable}
+\usepackage[normalem]{ulem}
 \usepackage{microtype}
 \usepackage{babel}
 \usepackage[hidelinks]{hyperref}
+\newcommand{\Xcancel}[2][black]{{\color{#1}\xcancel{\color{black}#2}}}
 \graphicspath{img/}
 \DeclareMathSymbol{\mlq}{\mathord}{operators}{``}
 \DeclareMathSymbol{\mrq}{\mathord}{operators}{`'}
@@ -193,7 +194,7 @@
 		 \end{itemize}
 		 Questo processo produce una forma iniziale di glossario della terminologia da utilizzare.
 
-		 Successivamente inizia la parte di \textbf{elicitazione dei requisiti} (secondo quadrante della figura \ref{fig:cycle-requirements}) nella quale si esplora il problema da risolvere con il software, analizzando il system-as-is, le specificità, le opportunità tecnologiche a disposizione.
+		 Successivamente inizia la parte di \textbf{elicitazione dei requisiti}\footnote{Elicitazione: è un termine che indica l'induzione di una risposta o di un fenomeno in una situazione o in un contesto specifico. L'elicitazione dei requisiti è la pratica di ricercare e scoprire i requisiti di un sistema da parte di utenti, clienti e altre parti interessate.} (secondo quadrante della figura \ref{fig:cycle-requirements}) nella quale si esplora il problema da risolvere con il software, analizzando il system-as-is, le specificità, le opportunità tecnologiche a disposizione.
 
 		 I requisiti sono accordati con gli stakeholders dopo una fase di negoziazione e durante la quale si identificano i punti di disaccordo, i rischi, le opzioni alternative. Poi si prioritarizzano i requisiti.
 
@@ -353,12 +354,136 @@
 		 			SofReq\colon & reverse=\mlq on \mrq \iff WheelPulses=\mlq on\mrq\\
 		 			\color{red}ASM \colon & \color{red} reverse= \mlq on\mrq  \iff ReverseThrustEnabled \\ &
 		 			\color{red} WheelPulses= \mlq on \mrq \iff WheelsTurning\\
-		 			Dom \colon & MovingOnRunway \iff WheelsTurning\\
+		 			\colorbox{yellow}{$Dom\colon$}  & \colorbox{red}{	\sout{$MovingOnRunway \iff WheelsTurning$}}\\
 		 			\hline[dashed]
 		 			SysReq\colon & ReverseThrustEnabled \iff MovingOnRunway
 		 		\end{tblr}
 		 	\end{eqnarray*}
-		 	\caption{}
+		 	\caption{l'errore che ha causato l'incidente aereo a Varsavia}
 		 \label{fig:a320-braking-logic}
 		 \end{figure}
+
+		Il sistema frenante è composto da:
+
+		\begin{enumerate}
+			\item  Spoiler a terra.
+
+			\begin{itemize}
+				\item Se selezionato "ON", gli spoiler a terra si estenderanno se vengono soddisfatte le seguenti condizioni "a terra":
+
+				\item entrambi i montanti oleo (ammortizzatori) sono compressi su entrambi i carrelli di atterraggio principali (il carico minimo per comprimere un ammortizzatore è di 6300 kg),
+
+				\item oppure la velocità delle ruote è superiore a 72 nodi su entrambi i carrelli di atterraggio principali.
+			\end{itemize}
+
+			\item  Invertitori di motore.
+
+			\begin{itemize}
+				\item Se selezionato "ON", gli invertitori del motore si attiveranno se viene soddisfatta la seguente condizione "a terra": gli ammortizzatori sono compressi su entrambi i carrelli di atterraggio principali.
+			\end{itemize}
+
+			\item  Freni delle ruote.
+			\begin{itemize}
+
+				\item Le condizioni sopra menzionate (velocità delle ruote superiore a 72 kts ed entrambi gli ammortizzatori compressi) non vengono utilizzate per attivare i freni.
+
+				\item Con la modalità primaria del sistema frenante, i freni possono essere utilizzati non appena la velocità delle ruote su entrambi i carrelli di atterraggio è superiore a 0,8 $V_0$ dove $V_0$ è una velocità di riferimento calcolata dalla BCSU.
+
+				\item Con la modalità alternativa del sistema frenante, i freni possono essere utilizzati non appena l'interruttore A/SKID-NOSE WHEEL STEERING è stato selezionato in posizione OFF dall'equipaggio.
+			\end{itemize}
+		\end{enumerate}
+	L'aquaplaning che ha interessato il D-AIPN della Lufthansa durante il rollout si è manifestato in varie fasi del rollout, probabilmente fin dall'inizio.
+
+	Potrebbe essere causato contemporaneamente da:
+
+	\begin{itemize}
+		\item strato d'acqua irregolare fino a diversi millimetri che ricopre la superficie della pista;
+		\item  elevata velocità di atterraggio;
+		\item  notevole usura di tre o quattro pneumatici del carrello di atterraggio principale.
+	\end{itemize}
+
+	Sulla base dell'analisi delle tracce sulla superficie della pista e della natura dei danni ai pneumatici si è dovuto supporre che nella parte finale della pista ricoperta di cemento l'aquaplaning si presentasse nella forma più sviluppata come scivolamento di ruote bloccate sul cuscino di vapore acqueo. Ciò ha causato la radicale diminuzione del coefficiente di attrito, ciò che è stato confermato dalla registrazione dell'avanzamento della frenata trovata nel registratore dei dati di volo.
+
+	Questo argomento è stato elaborato dalla società "Consulting Lotniczy AVIAPOL", Poznan.
+
+	Dunque ciò che ha inibito l'attivazione dei sistemi di frenaggio sono stati principalmente:
+	\begin{enumerate}
+		\item il contatto di una sola ruota sulla pista;
+		\item il fenomeno dell'acquaplanning.
+	\end{enumerate}
+	che sono riconducibili ad una definizione errata delle proprietà di dominio.
+
+	Gli \textbf{ostacoli} all'introduzione delle pratiche corrette all'ingegneria dei requisiti:
+	\begin{itemize}
+		\item raccogliere i requisiti è costoso in termini di tempo e non è possibile sapere in anticipo se il contratto verrà stipulato;
+		\item le scadenze;
+		\item economicità dei requisiti: potrebbero esserci pochi studi ed è difficile stimare il costo dei requisiti;
+		\item il progresso nei processi RE è più difficile da misurare rispetto ai processi di implementazione e progettazione;
+		\item i documenti dei requisiti potrebbero diventare grandi, complessi e non aggiornati; potrebbe essere troppo distante dal prodotto finale e i RD potrebbero essere implementati in maniera non strutturata.
+	\end{itemize}
+	\subsection{RE nei progetti agili}
+	Nei progetti \textbf{agili}, il processo di RE è gestito utilizzando un processo ciclico a spirale, in cui il primo ciclo è molto veloce e in cui viene abbozzato il progetto e che rappresenta una base per i cicli successivi. Forti presupposti affinché l'agilità abbia successo:
+	\begin{enumerate}
+		\item  tutti i ruoli degli stakeholder sono riducibili ad un unico ruolo;
+		\item progetto sufficientemente piccolo da poter essere assegnato a un team unico, piccolo e con un'unica sede (programmatori/tester/manutentori);
+		\item l'“Utente” può interagire tempestivamente ed efficacemente;
+		\item la funzionalità può essere fornita in modo rapido, coerente e incrementale dall'essenziale al
+		meno importante (non è richiesta alcuna priorità);
+		\item  aspetti non funzionali, ipotesi ambientali, obiettivi, opzioni alternative, i rischi possono ricevere poca attenzione;
+		\item poca documentazione richiesta per il coordinamento del lavoro e la manutenzione del prodotto;
+		precisione dei requisiti non richiesta; la verifica prima della codifica è meno importante del rilascio anticipato;
+		\item è improbabile che le modifiche ai requisiti richiedano un importante refactoring del codice.
+	\end{enumerate}
+	\section{Comprensione del dominio e elicitazione dei requisiti}
+	Rappresenta la prima fase della spirale della figura \ref{fig:cycle-requirements}.
+	Per acquisire informazioni riguardo i requisiti vengono eseguite certe attività:
+	\begin{itemize}
+		\item studiare il system-as-is:
+		\begin{itemize}
+			\item organizzazione aziendale: la struttura, le dipendenze, gli obbiettivi strategico, le politiche, i flussi di lavoro, le procedure operazionali;
+			\item il dominio di applicazione: i concetti, gli obbiettivi, i compiti, i vincoli, i regolamenti;
+			\item analisi di problemi con il system-as-is: le cause, le conseguenze;
+		\end{itemize}
+		\item analizzare le opportunità tecnologiche, le condizioni di mercato più recenti;
+		\item identificare gli \textbf{stakeholders} di sistema;
+		\item identificare gli obbiettivi da migliorare, i vincoli organizzativi e tecnologici del system-to-be; le opzioni alternative per soddisfare gli obbiettivi, per assegnare responsabilità; gli scenari di un ipotetica interazione con l'ambiente software, i requisiti sul software, le assunzioni sull'ambiente.
+	\end{itemize}
+	 \subsection{Tecniche di elicitazione}
+	 Vi sono due tecniche principali di elicitazione:
+	 \begin{enumerate}
+	 	\item \textbf{Artefact-driven}: orientata agli artefatti disponibili
+	 	\item \textbf{Stakeholder-driven}: orientata al coinvolgimento degli stakeholders.
+	 \end{enumerate}
+	 \subsection{Analisi degli stakeholders}
+	 La cooperazione degli stakeholder è essenziale per un RE di successo. Deve essere selezionato un campione rappresentativo per assicurare una copertura adeguata, comprensiva del problema del mondo reale.
+	 La selezione avviene in base alla posizione dell'organizzazione, al ruolo nel prendere le decisioni, il tipo di contributo alla conoscenza che porta, livello di esposizione ai problemi, interessi personali, potenziali conflitti (differenti tipologie di utenti possono avere necessità distinte e anche in conflitto perché magari vogliono guadagnare una qualche forma di posizione di vantaggio all'interno dell'azienda).
+
+	 Acquisire la conoscenza dagli stakeholder è difficile perché:
+	 \begin{itemize}
+	 	\item sorgenti di informazioni diverse, punti di vista in contrapposizione;
+	 	\item difficoltà ad accedere alle persone chiave (più in alto sono nella gerarchia aziendale, più probabile è la loro indisponibilità perché coprono ruoli critici);
+	 	\item background, terminologia e cultura differenti (che vuol dire che, persone diverse potrebbero utilizzare una terminologia differente);
+	 	\item conoscenza tacita, necessità nascoste: alcuni soggetti potrebbero sottintendere concetti perché sono dati per scontato;
+	 	\item dettagli irrilevanti: l'utente esprime, attraverso esempi, dettagli irrilevanti;
+	 	\item resistenza al cambiamento, politiche interne, competizione: le persone cambiano difficilmente le proprie abitudini (dal ramo operativo, al ramo dirigenziale);
+	 	\item cambio del personale, cambiamenti nell'organizzazione, cambiamenti nelle priorità.
+	 \end{itemize}
+	 L'ingegnere dei requisiti deve avere diverse soft-skills: abilità di comunicazione, capacità di ascolto, stabilire una relazione di fiducia, capacità di riformulare le conoscenze e di ristrutturarle in continuazione.
+
+	 \subsubsection{Background study} Serve per capire il dominio in cui l'azienda opera. Consiste nel raccogliere conoscenza di base a partire da informazioni provenienti dall'organizzazione aziendale che si sta studiando. I documenti devono contenere informazioni riguardo:
+	 \begin{itemize}
+	 	\item l'\textbf{organizzazione:} avviene attraverso la consultazione di grafici organizzativi (ad esempio un albero in cui vengono rappresentati i ruoli dei dipendenti), piani di business (quali sono le strategie messe in atto dall'azienda per raggiungere gli obbiettivi), report finanziari, verbali delle riunioni (cosa è stato detto durante le riunioni);
+	 	\item \textbf{dominio:} attraverso libri, articoli, sondaggi, regolamentazioni, report su sistemi simili che operano nello stesso dominio;
+	 	\item \textbf{system-as-is:} consultando la documentazione delle procedure aziendali, regole di business, documenti scambiati, le richieste di cambiamento, i report che contengono dei difetti riscontrati, delle lamentele degli utenti (in alcuni ambiti, è obbligatorio per legge);
+	 \end{itemize}
+	 L'ingegnere dei requisiti utilizza lo studio di background per comunicare più efficacemente con gli stakeholders.
+
+	 L'attività di raccolta dei requisiti potrebbe essere onerosa in termini di tempo, perché il materiale da analizzare durante il background study potrebbe essere datato, contenere dettagli irrilevanti. Una possibile soluzione è data dall'utilizzo di metadati per filtrare la documentazione (intesa come fonte di informazioni provenienti dall'organizzazione aziendale).
+
+	 \subsubsection{Data collection}
+	 Consiste nella raccolta di dati, fatti aziendali, quindi informazioni quantitative. Questo tipo di valutazioni serve per ottenere requisiti \textbf{non funzionali}. Un problema nell'elicitazione dei requisiti. è ottenere dati affidabili e riuscire ad interpretarli correttamente.
+	 \subsubsection{Questionari} Consiste nel somministrare agli stakeholders, una lista di domande (aperte o chiuse) per raccogliere informazioni che riguardano il system-as-is. Le domande possono essere a crocette, a risposta multipla, espresse in una scala ordinale. Questa tecnica è efficace per raccogliere informazioni velocemente e in maniera economica, senza la necessità di recarsi presso gli stakeholders.
+
+	 La formulazione delle domande all'interno dei questionari richiede di prestare molta attenzione,   in particolare a non suggerire le risposte agli stakeholders o inserire un bias nelle domande. Ogni domanda deve essere chiara, non ambigua. Ci sono delle linee guida che possono essere seguite per formulare correttamente i questionari. È importante fare un \textbf{cross-check}, riformulando più volte la stessa domanda per assicurare la non presenza di inconsistenze nelle risposte.
+	 I questionari potrebbero essere controllati da terze parti per verificare la consistenza delle risposte.
 \end{document}
