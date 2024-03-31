@@ -1,0 +1,21 @@
+\begin{figure}[ht]
+	\centering
+		%\hrule\bigskip % show \columnwidth
+	
+	\noindent
+	\begin{tikzpicture}
+		\node[draw] at (0,0) {%
+			\parbox{\dimexpr\columnwidth-(\pgfkeysvalueof{/pgf/inner xsep})*2\relax}{%
+				\begin{enumerate}[nosep, wide]
+					\item L'organizzatore decide di pianificare un meeting attraverso il sistema di gestione dei meeting che gli chiede di scegliere quando organizzare un meeting, selezionando in un intervallo temporale, e la lista dei partecipanti.
+					\item Il sistema verifica che l'organizzatore abbia i permessi per avanzare la richiesta (valutando il suo ruolo) e in caso affermativo, conferma all'organizzatore che l'attività di scheduling è stata iniziata.
+					\item Il sistema chiede a tutti i partecipanti nella lista di inviare i vincoli in termini di date e il luogo dove fare il meeting.
+					\item Quando un ciascun partecipante invia i vincoli, il sistema li verifica e se sono validi, li registra e notifica ciascun partecipante.
+					\item Il sistema determina la data e la locazione del meeting.
+					\item Il sistema software notifica i partecipanti e l'organizzatore riguardo la data e il luogo del meeting.
+				\end{enumerate}%
+		}};
+	\end{tikzpicture}
+	\label{fig:esempio-scenario}
+	\caption{Un esempio di scenario di un sistema di pianificazione dei meeting:}
+\end{figure}
